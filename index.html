@@ -1,15 +1,64 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+        integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
     <link rel="stylesheet" href="/css/style.css ">
     <title>Blackjackls</title>
 </head>
-<body>
-    
 
+<body>
+
+    <header class="titulo">
+        BlackJack
+    </header>
+
+    <div class="row mt-2">
+        <div class="col text-center">
+            <button class="btn btn-danger">Nuevo Juego</button>
+            <button class="btn btn-primary">Pedir carta</button>
+            <button class="btn btn-primary">juego</button>
+        </div>
+    </div>
+
+    <div class="row " >
+        <div class="col col-md-6">
+
+
+            <h1 class=" text-center text-white">Jugador 1 - <small> 0</small></h1>
+            <div id="jugador-cartas">
+                <img class="carta" src="/assets/cartas/10D.png" alt="">
+                <img class="carta" src="/assets/cartas/10D.png" alt="">
+                <img class="carta" src="/assets/cartas/10D.png" alt="">
+
+
+            </div>
+
+        </div>
+        <div class=" col col-md-6" >
+            <h1 class=" text-center text-white">Computadora 1 - <small> 0</small></h1>
+            <div id="computadora-cartas">
+                <img class="carta" src="/assets/cartas/10D.png" alt="">
+                <img class="carta" src="/assets/cartas/10D.png" alt="">
+                <img class="carta" src="/assets/cartas/10D.png" alt="">
+                
+
+            </div>
+        </div>
+
+    </div>
+
+
+    <div class="row container">
+        <div class="col">
+            
+        </div>
+    </div>
 
     <script src="/js/juego.js"></script>
 </body>
+
 </html>
