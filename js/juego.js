@@ -1,8 +1,10 @@
 let deck = [];
+let scorePlayer = 0
 const typeCarts = ["C", "D", "H", "S"];
 const specialCarts = ["A", "J", "Q", "K"];
 const playerDeck = document.getElementById("jugador-cartas");
 const createDeck = () => {
+  deck = []  
   for (let i = 2; i <= 10; i++) {
     for (let typeCart of typeCarts) {
       deck.push(i + typeCart);
@@ -15,7 +17,7 @@ const createDeck = () => {
     }
   }
 
-  deck = _.shuffle(deck);
+//   deck = _.shuffle(deck);
 };
 
 const addCart = () => {
@@ -24,6 +26,7 @@ const addCart = () => {
 
       const posCart = genereteCardPos();
       const cart = deck[posCart];
+      valueCart(cart)
       deck.splice(posCart, 1);
       playerDeck.innerHTML += `<img class="carta" src="/assets/cartas/${cart}.png" alt=""></img>`;
       return;
@@ -49,6 +52,27 @@ const newGame = () => {
     startGame();
   });
 };
+
+
+
+const valueCart =( cart) =>{
+
+    const value = cart.substring(0, cart.length-1)
+    // console.log(parseInt(value,10) );
+    if( !isNaN(value)){
+        scorePlayer += parseInt(value,10)
+        
+    }else {
+        
+        scorePlayer += (value === 'A')?11:10
+    }
+    
+    document.getElementById('playerScore').textContent = scorePlayer    
+    
+}
+
+
+
 
 const startGame = () => {
   createDeck();
