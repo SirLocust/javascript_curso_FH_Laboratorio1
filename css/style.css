@@ -22,7 +22,7 @@ html,body{
 
 
 .carta{
-    position: relative;
+    position: relative;;
     width: 9.375em;
     left: 6.25em;
     margin-left: -4.688em;
@@ -30,5 +30,8 @@ html,body{
 }
 
 #computadora-cartas , #jugador-cartas{
+    display: flex;
+    flex-wrap: wrap;
     height: 15em;
+    margin-right: 5em;
 }
