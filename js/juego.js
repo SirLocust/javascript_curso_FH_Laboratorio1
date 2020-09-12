@@ -1,10 +1,17 @@
 let deck = [];
-let scorePlayer = 0
+let scorePlayer = 0;
+let scoreComputer = 0;
 const typeCarts = ["C", "D", "H", "S"];
 const specialCarts = ["A", "J", "Q", "K"];
+let whichPlayerGame= 'player'
+const buttonGiveCart = document.getElementById("giveCart");
 const playerDeck = document.getElementById("jugador-cartas");
+const computerDeck = document.querySelector('#computadora-cartas')
+const uiScorePlayer = document.querySelector("#playerScore")
+const uiScoreComputer= document.querySelectorAll('small')[1]
+const buttonstopGiveCarts = document.querySelector('#stopCarts')
+let  stopGiveCarts = false
 const createDeck = () => {
-  deck = []  
   for (let i = 2; i <= 10; i++) {
     for (let typeCart of typeCarts) {
       deck.push(i + typeCart);
@@ -17,35 +24,67 @@ const createDeck = () => {
     }
   }
 
-//   deck = _.shuffle(deck);
+  //   deck = _.shuffle(deck);
 };
 
-const addCart = () => {
+const addCart = (cart, whichPlayer) => {
   //    const newCart = document.createElement('img').setAttribute('class','carta');
-  if(deck.length >0){
 
-      const posCart = genereteCardPos();
-      const cart = deck[posCart];
-      valueCart(cart)
-      deck.splice(posCart, 1);
+  if (deck.length) {
+    valueCart(cart,whichPlayer);
+    if(whichPlayer === 'player'){
+
       playerDeck.innerHTML += `<img class="carta" src="/assets/cartas/${cart}.png" alt=""></img>`;
+      if(scorePlayer > 21  ){
+        alert('perdieste')
+        // buttonGiveCart.setAttribute('disabled','')
+       callTurnComputer()
+      }
+      
+      console.log("no hay mas cartas");
       return;
+    }
+    if(whichPlayer === "computer"){
+      computerDeck.innerHTML += `<img class="carta" src="/assets/cartas/${cart}.png" alt=""></img>`;
+    }
+
+    
   }
-  console.log("no hay mas cartas")
-
 };
 
-const buttonGiveCart = () => {
-  const button = document.getElementById("giveCart");
-  button.addEventListener("click", () => {
-    addCart();
-  });
+buttonstopGiveCarts.addEventListener('click', () => {
+  callTurnComputer()
+})
+
+const  callTurnComputer = () => {
+  whichPlayerGame = 'computer'
+  gameComputer()
+  buttonGiveCart.toggleAttribute('disabled')
+} 
+
+const giveCart = () => {
+  const posCart = genereteCardPos();
+  const cart = deck[posCart];
+  deck.splice(posCart, 1);
+  return cart;
 };
+
+buttonGiveCart.addEventListener("click", () => {
+  const cart = giveCart()   
+  addCart(cart, whichPlayerGame);
+});
 
 const newGame = () => {
   const button = document.getElementById("newGame");
   button.addEventListener("click", () => {
-    console.log("go");
+    if(scorePlayer != 0){
+      buttonGiveCart.toggleAttribute('disabled')
+    }
+    scorePlayer = 0;
+    scoreComputer = 0;
+    whichPlayerGame='player'
+    deck = [];
+    refreshScorePlayer(scorePlayer,whichPlayerGame);
     document.querySelectorAll(".carta").forEach((e) => {
       e.remove();
     });
@@ -53,36 +92,49 @@ const newGame = () => {
   });
 };
 
+const valueCart = (cart , whichPlayer) => {
+  const value = cart.substring(0, cart.length - 1);
 
+  if(whichPlayer === "player"){
 
-const valueCart =( cart) =>{
+    scorePlayer += !isNaN(value) ? parseInt(value, 10) : value === "A" ? 11 : 10;
+    refreshScorePlayer(scorePlayer , whichPlayer);
+    return
+  }
+  if(whichPlayer === 'computer'){
+    scoreComputer += !isNaN(value) ? parseInt(value, 10) : value === "A" ? 11 : 10;
+    refreshScorePlayer(scoreComputer, whichPlayer);
+    return
+  }
 
-    const value = cart.substring(0, cart.length-1)
-    // console.log(parseInt(value,10) );
-    if( !isNaN(value)){
-        scorePlayer += parseInt(value,10)
-        
-    }else {
-        
-        scorePlayer += (value === 'A')?11:10
-    }
-    
-    document.getElementById('playerScore').textContent = scorePlayer    
-    
-}
+};
 
+const refreshScorePlayer = (score, whichPlayer) => {
+ 
+  if(whichPlayer === "player"){
 
-
+    uiScorePlayer.textContent = score;
+    return
+  }
+  if(whichPlayer === 'computer'){
+    uiScoreComputer.textContent = score
+    return
+  }
+};
 
 const startGame = () => {
   createDeck();
-  buttonGiveCart();
 };
-
-newGame();
 
 const genereteCardPos = () => {
   return Math.floor(Math.random() * (deck.length - 0) + 0);
 };
 
-console.table(deck);
+const gameComputer =() =>{
+  while(scoreComputer <= scorePlayer && scoreComputer <= 21){
+    const cart = giveCart() 
+    addCart(cart, whichPlayerGame)
+  }
+}
+
+newGame();
